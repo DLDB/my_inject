@@ -11,6 +11,10 @@ describe 'my inject' do
       expect([].my_inject).to eq [].inject
     end
 
+    it 'adds one plus two' do
+      expect([1,2].my_inject(){|acc, num| acc + num }).to eq [1,2].inject(&:+)
+    end
+
     it 'adds one plus two plus three' do
       expect(ary.my_inject(&:+)).to eq [1,2,3].inject(&:+)
     end
@@ -23,25 +27,29 @@ describe 'my inject' do
       expect(ary.my_inject(&:*)).to eq [1,2,3].inject(&:*)
     end
 
-    it 'divides one by two by three' do
+   it 'divides one by two by three' do
       expect(ary.my_inject(&:/)).to eq [1,2,3].inject(&:/)
     end
   end
 
-  context 'when there are five elements' do
+  context 'when there are five elements in an array' do
   
     let(:ary) { [1,2,3,4,5]}
-    let(:words) { ['apples', 'pears', 'bananas', 'watermelons', 'pomegranates' ]}
+    let(:words) { ['apples', 'pears', 'bananas', 'watermelons', 'pomegranates' ] }
 
     it 'adds five elements' do
       expect(ary.my_inject(&:+)).to eq [1,2,3,4,5].inject(&:+)
     end
 
-    it 'can find the longest word in an array' do
+    it 'can find the longest word' do
       expect(words.my_inject { |memo, word| 
         memo.length > word.length ? memo : word
         } ).to eq ['apples', 'pears', 'bananas', 'watermelons', 'pomegranates' ].inject() { |memo, word|
         memo.length > word.length ? memo : word }
+    end
+
+    it 'can handle weird maths' do
+      expect(ary.my_inject{|a,b| a = b + a * b % b - a} ).to eq (1..5).inject{|a,b| a = b + a * b % b - a} 
     end
 
   end
