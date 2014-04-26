@@ -60,4 +60,16 @@ describe 'my inject' do
       expect(ary.my_inject{|a,b| a * b + a ** b % b - a -a -a / a + b} ).to eq (1..5).inject{|a,b| a * b + a ** b % b - a -a -a / a + b} 
     end
   end
+  context 'long arrays' do
+
+    it 'can handle an array with 20 elements' do
+      ary = (1..20).to_a
+      expect(ary.my_inject(&:+)).to eq ary.inject(&:+)
+    end
+
+    it 'can handle an array with 200 elements' do
+      ary = (1..200).to_a
+      expect(ary.my_inject(&:+)).to eq ary.inject(&:+)
+    end
+  end
 end
