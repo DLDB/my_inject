@@ -2,18 +2,26 @@ require 'my_inject'
 
 describe 'my inject' do
 
-  context 'when there are three or fewer Fixnum elements with no arguments ' do
-    
-    let(:ary) { [1,2,3] }
-    
+  context 'general properties' do
 
     it 'empty array be nil' do
       expect([].my_inject).to eq [].inject
     end
 
+    it 'does not destroy original array' do
+      array = [1,2]
+      array.my_inject(&:+)
+      expect(array).to eq [1,2]
+    end
+
     it 'adds one plus two' do
       expect([1,2].my_inject(){|acc, num| acc + num }).to eq [1,2].inject(&:+)
     end
+  end
+
+  context 'when there are three or fewer Fixnum elements with no arguments ' do
+    
+    let(:ary) { [1,2,3] }
 
     it 'adds one plus two plus three' do
       expect(ary.my_inject(&:+)).to eq [1,2,3].inject(&:+)
@@ -49,8 +57,7 @@ describe 'my inject' do
     end
 
     it 'can handle weird maths' do
-      expect(ary.my_inject{|a,b| a = b + a * b % b - a} ).to eq (1..5).inject{|a,b| a = b + a * b % b - a} 
+      expect(ary.my_inject{|a,b| a * b + a ** b % b - a -a -a / a + b} ).to eq (1..5).inject{|a,b| a * b + a ** b % b - a -a -a / a + b} 
     end
-
   end
 end
