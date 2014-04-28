@@ -8,6 +8,10 @@ describe 'my inject' do
       expect([].my_inject).to eq [].inject
     end
 
+    it 'will return the element if passed array with one element and no block' do
+      expect([1].my_inject).to eq [1].inject
+    end
+
     it 'does not destroy original array' do
       array = [1,2]
       array.my_inject(&:+)
@@ -19,7 +23,7 @@ describe 'my inject' do
     end
   end
 
-  context 'when there are three or fewer Fixnum elements with no arguments ' do
+  context 'when there are three Fixnum elements and a block' do
     
     let(:ary) { [1,2,3] }
 
@@ -49,11 +53,23 @@ describe 'my inject' do
       expect(ary.my_inject(&:+)).to eq [1,2,3,4,5].inject(&:+)
     end
 
+    it 'divides five elements' do
+      expect(ary.my_inject(&:/)).to eq [1,2,3,4,5].inject(&:/)
+    end
+
+    it 'divides five elements in reverse' do
+      expect([5,4,3,2,1].my_inject(&:/)).to eq [5,4,3,2,1].inject(&:/)
+    end
+
     it 'can find the longest word' do
       expect(words.my_inject { |memo, word| 
         memo.length > word.length ? memo : word
         } ).to eq ['apples', 'pears', 'bananas', 'watermelons', 'pomegranates' ].inject() { |memo, word|
         memo.length > word.length ? memo : word }
+    end
+
+    it 'can write a bunch of nonsense if given a bunch of nonsense' do
+      expect(['a ', 'bunch ', 'of ', 'nonsense!'].my_inject('writing ', &:+)).to eq ['a ', 'bunch ', 'of ', 'nonsense!'].inject('writing ', &:+)
     end
 
     it 'can handle weird maths' do
